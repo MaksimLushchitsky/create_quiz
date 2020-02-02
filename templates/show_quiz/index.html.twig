@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EditQuiz{% endblock %}
+
+{% block body %}
+    <style>
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        .table {
+            margin-top: 40px;
+        }
+    </style>
+
+    <div class="container-fluid header clearfix">
+        <a href="{{ '/main' }}">Main page</a>
+    </div>
+
+
+    <div class="container">
+        <div class="container">
+            <table class="table table-bordered" style="text-align: center">
+                <thead>
+                <tr>
+                    <th>Quiz</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for quiz in quizes %}
+                    <tr>
+                        <td>{{ quiz.quiz }}</td>
+                        <td>
+                            <a href="{{ path('show', {'id': quiz.id}) }}" class="btn btn-sm btn-info">Show</a>
+                            <a href="{{ path('quiz_edit', {'quiz': quiz.id}) }}" class="btn btn-sm btn-success">Edit</a>
+                            <a href="{{ path('add_question', {'id': quiz.id}) }}" class="btn btn-sm btn-warning">Add question</a>
+                            <a href="{{ path('delete', {'quiz': quiz.id}) }}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

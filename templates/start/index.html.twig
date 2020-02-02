@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Start{% endblock %}
+
+{% block body %}
+    <style>
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        .container{
+            margin-top: 20px;
+        }
+
+        table{
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+
+
+    <div class="container-fluid header clearfix">
+        <p>{{ app.user.username }}</p>
+        <a href="{{ '/main' }}">Main</a>
+        <p style="float: right; color: #97DC9D">Quiz: {{ quiz.quiz }}</p>
+    </div>
+
+        <div class="container">
+            {% for question in quiz.questions %}
+                <table class="table table-bordered" id="td">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th colspan="3">
+                            {{ question.question }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for answer in question.answers %}
+                            <td>
+                                <button type="submit"  class="btn btn-sm btn-success">
+                                    {{ answer.answer }}
+                                </button>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 20px;
+            width: 800px;
+        }
+
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        .panel {
+            border: 1px solid #5eb5e0;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .panel-heading{
+            background: #5eb5e0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .panel-body{
+            padding: 20px;
+        }
+
+        .addnewitem{
+            margin-top: 20px;
+        }
+
+        .remove{
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+    </style>
+
+
+    <div class="container-fluid header clearfix">
+        <p>{{ app.user.username }}</p>
+        <a href="{{ '/main' }}">Main page</a>
+    </div>
+
+    <div class="container">
+        <h1>Create new quiz</h1>
+
+        {{ form_start(form) }}
+
+        {{ form_row(form.quiz, {'label': ' ', 'attr': {'class': 'form-control', 'placeholder': 'Quiz'}}) }}
+
+        <br><br>
+
+        <div class="questions" id="questions" data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
+
+            {% for question in form.questions %}
+                <div class="panel">
+                    <div class="panel-heading">
+                        <p>Question Form</p>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_row(question.question, {'label': ' ', 'attr': {'class': 'form-control', 'placeholder': 'Question'}}) }}
+                        <div data-prototype="{{ form_widget(question.answers.vars.prototype)|e }}">
+                            {% for answer in question.answers %}
+                                {{ form_row(answer.answer, {'label': ' ', 'attr': {'class': 'form-control', 'placeholder': 'Answer'}}) }}
+                                {{ form_row(answer.is_true, {'label': ' '}) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <br><br>
+
+        <button class="btn btn-success col-12" type="submit" style="margin-bottom: 50px;">Create quiz</button>
+        {{ form_end(form) }}
+    </div>
+
+    <script type="text/javascript">
+        let $collectionHolder;
+
+        let $addNewItem = $('<a href="#" class="btn btn-info col-12 addnewitem">Add new item</a>');
+
+        $(document).ready(function () {
+            $collectionHolder = $('.questions');
+
+            $collectionHolder.append($addNewItem);
+
+            $collectionHolder.data('index', $collectionHolder.find('.panel').length);
+
+            $collectionHolder.find('.panel').each(function () {
+                addRemoveButton($(this));
+            });
+
+            $addNewItem.click(function (e) {
+                e.preventDefault();
+
+                addNewForm();
+            })
+        });
+        
+        function addNewForm() {
+            let prototype = $collectionHolder.data('prototype');
+
+            let index = $collectionHolder.data('index');
+
+            let newForm = prototype;
+
+            newForm = newForm.replace(/__name__/g, index);
+
+            $collectionHolder.data('index', index++);
+
+            let $panel = $('<div class="panel"><div class="panel-heading"><p>Question Form</p></div></div>');
+            let $panelBody = $('<div class="panel-body"></div>').append(newForm);
+
+            $panel.append($panelBody);
+
+            addRemoveButton($panel);
+
+            $addNewItem.before($panel);
+
+        }
+
+        function addRemoveButton($panel) {
+            let $removeButton = $('<a href="#" class="btn btn-sm btn-danger col-12 remove">Remove</a>');
+
+            let $panelFooter = $('<div class="panel-footer"></div>').append($removeButton);
+
+            $removeButton.click(function (e) {
+               $(e.target).parents('.panel').slideUp(500, function () {
+                   $(this).remove();
+               });
+            });
+
+            $panel.append($panelFooter);
+        }
+    </script>
+
+
+{% endblock %}

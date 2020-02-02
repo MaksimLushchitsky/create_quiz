@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app.user.email }}{% endblock %}
+
+{% block body %}
+    <style>
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        .container{
+            border: 1px solid black;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            width: 800px;
+            background: #FFFCD5;
+        }
+    </style>
+
+    <div class="container-fluid header clearfix">
+        <p>{{ app.user.username }}</p>
+        <a href="{{ '/deconnection' }}">Log out</a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ '/create/quiz' }}">CREATE_QUIZ</a>
+            <a href="{{ '/admin' }}">ADMIN_PANEL</a>
+            <a href="{{ '/edit' }}">QUIZ_PANEL</a>
+        {% endif %}
+    </div>
+
+
+    {% for quiz in quizes %}
+        <div class="container">
+            <h6>({{ quiz.id }}) Quiz: {{ quiz.quiz }}</h6>
+            <br>
+            <a href="{{ path('start', {'id': quiz.id}) }}" class="btn btn-success">Start</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}

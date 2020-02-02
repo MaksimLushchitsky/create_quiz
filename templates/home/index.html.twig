@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <style>
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        table{
+            margin-top: 50px;
+        }
+
+        .container{
+            text-align: center;
+        }
+    </style>
+
+    <div class="container-fluid header clearfix">
+        <p>You must be logged in to access the quiz.</p>
+        <a href="{{ '/inscription' }}">Register</a>
+        <a href="{{ '/connection' }}">Log in</a>
+    </div>
+
+
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-inverse">
+        <tr>
+            <th>#</th>
+            <th>Quiz</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for quiz in quizes %}
+            <tr>
+                <td>{{ quiz.id }}</td>
+                <td>{{ quiz.quiz }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

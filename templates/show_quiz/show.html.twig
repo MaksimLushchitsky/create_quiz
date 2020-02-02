@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EditQuiz{% endblock %}
+
+{% block body %}
+    <style>
+        .clearfix:after {
+            content: '';
+            display: table;
+            width: 100%;
+            clear: box;
+        }
+
+        .header {
+            background: #363636;
+        }
+
+        .header a {
+            color: #FFFFFF;
+            font-size: 20px;
+            float: right;
+            margin: 15px;
+        }
+
+        .header a:hover {
+            color: #727272;
+            text-decoration: none;
+        }
+
+        .header p {
+            float: left;
+            color: #FFFFFF;
+            font-size: 20px;
+            margin: 15px;
+        }
+
+        .table {
+            margin-top: 40px;
+        }
+
+        .quiz{
+            margin: 50px;
+            padding: 20px;
+        }
+    </style>
+
+    <div class="container-fluid header clearfix">
+        <a href="{{ '/main' }}">Main page</a>
+        <a href="{{ '/edit' }}">Back</a>
+    </div>
+
+    <div class="container">
+        <div class="quiz">
+            <h1><b>{{ quiz.quiz }}</b>:</h1>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Questions</th>
+                    <th style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <td>{{ question.question }}</td>
+                        <td style="text-align: center">
+                            <a class="btn btn-sm btn-info" href="{{ path('show_questions', {'quiz_id': question.id}) }}">Show</a>
+                            <a class="btn btn-sm btn-success" href="{{ path('question_edit', {'question': question.id}) }}">edit</a>
+                            <a class="btn btn-sm btn-danger" href="{{ path('delete_question', {'question': question.id}) }}">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
